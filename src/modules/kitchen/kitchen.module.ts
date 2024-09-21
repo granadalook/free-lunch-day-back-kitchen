@@ -14,7 +14,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           subscribe: {
             fromBeginning: true,
           },
-          consumer: { groupId: 'kafka-test' },
+          consumer: { groupId: 'kafka-test-kitchen' },
           client: {
             ssl: true,
             sasl: {

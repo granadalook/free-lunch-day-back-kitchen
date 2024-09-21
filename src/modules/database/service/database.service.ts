@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  OrderStatusDto,
+  RecipeResultDto,
+} from '../../kitchen/dto/response.dto';
 
 @Injectable()
 export class DatabaseService {
-  private statusList: { id: string; status: string }[] = [];
+  private statusList: { id: string; status: string; order: number }[] = [];
   getListFoods() {
     return [
       {
@@ -98,41 +102,7 @@ export class DatabaseService {
       },
     ];
   }
-  getListIngredients() {
-    return [
-      {
-        tomato: 'tomato',
-      },
-      {
-        lemon: 'lemon',
-      },
-      {
-        potato: 'potato',
-      },
-      {
-        rice: 'rice',
-      },
-      {
-        ketchup: 'ketchup',
-      },
-      {
-        lettuce: 'lettuce',
-      },
-      {
-        onion: 'onion',
-      },
-      {
-        cheese: 'cheese',
-      },
-      {
-        meat: 'meat',
-      },
-      {
-        chicken: 'chicken',
-      },
-    ];
-  }
-  getRecipeByCode(codeOrder: number) {
+  getRecipeByCode(codeOrder: number): RecipeResultDto | null {
     const recipes = this.getListRecipes();
     const recipeObject = recipes.find((recipe) => recipe.code === codeOrder);
     if (recipeObject) {
@@ -144,15 +114,15 @@ export class DatabaseService {
     }
     return null;
   }
-  statusOrder(id: string, status: string) {
+  statusOrder(id: string, status: string, order?: number): void {
     const existingOrder = this.statusList.find((order) => order.id === id);
     if (existingOrder) {
       existingOrder.status = status;
     } else {
-      this.statusList.push({ id, status });
+      this.statusList.push({ id, status, order });
     }
   }
-  getStatusList() {
+  getStatusList(): Array<OrderStatusDto> {
     return this.statusList;
   }
 }
