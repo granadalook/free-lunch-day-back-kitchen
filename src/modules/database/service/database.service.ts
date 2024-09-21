@@ -4,11 +4,12 @@ import {
   OrderStatusDto,
   RecipeResultDto,
 } from '../../kitchen/dto/response.dto';
+import { Food, Recipe } from '../dto/database.dto';
 
 @Injectable()
 export class DatabaseService {
-  private statusList: { id: string; status: string; order: number }[] = [];
-  getListFoods() {
+  statusList: { id: string; status: string; order: number }[] = [];
+  getListFoods(): Array<Food> {
     return [
       {
         code: 1,
@@ -44,7 +45,7 @@ export class DatabaseService {
       },
     ];
   }
-  getListRecipes() {
+  getListRecipes(): Array<Recipe> {
     return [
       {
         code: 1,
