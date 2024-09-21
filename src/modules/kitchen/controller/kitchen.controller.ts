@@ -3,6 +3,7 @@ import { KitchenService } from '../service/kitchen.service';
 import { DatabaseService } from 'src/modules/database/service/database.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { OrderStatusDto } from '../dto/response.dto';
+import { KafkaTopicsConstants } from '../../constants/kafka.topics';
 
 @Controller('kitchen')
 export class KitchenController {
@@ -21,7 +22,7 @@ export class KitchenController {
     return this.databaseService.getStatusList();
   }
 
-  @MessagePattern('update-status-order')
+  @MessagePattern(KafkaTopicsConstants.UPDATE_STATUS_TOPIC)
   updateStatus(@Payload() payload: OrderStatusDto) {
     return this.databaseService.statusOrder(payload.id, payload.status);
   }
