@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { DatabaseService } from 'src/modules/database/service/database.service';
+import { DatabaseService } from '../../database/service/database.service';
 import { ClientProxy } from '@nestjs/microservices';
 import { OrderCreateDto } from '../dto/response.dto';
 import { KafkaTopicsConstants } from '../../constants/kafka.topics';

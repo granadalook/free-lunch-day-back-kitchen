@@ -1,6 +1,6 @@
 import { Controller, Param, Get, ParseIntPipe } from '@nestjs/common';
 import { KitchenService } from '../service/kitchen.service';
-import { DatabaseService } from 'src/modules/database/service/database.service';
+import { DatabaseService } from '../../database/service/database.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { OrderStatusDto } from '../dto/response.dto';
 import { KafkaTopicsConstants } from '../../constants/kafka.topics';
