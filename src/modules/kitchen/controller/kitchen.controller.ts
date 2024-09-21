@@ -2,7 +2,7 @@ import { Controller, Param, Get, ParseIntPipe } from '@nestjs/common';
 import { KitchenService } from '../service/kitchen.service';
 import { DatabaseService } from '../../database/service/database.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { OrderStatusDto } from '../dto/response.dto';
+import { OrderStatusDto, OrderCreateDto } from '../dto/response.dto';
 import { KafkaTopicsConstants } from '../../constants/kafka.topics';
 
 @Controller('kitchen')
@@ -13,7 +13,7 @@ export class KitchenController {
   ) {}
 
   @Get('newOrder/:orderNum')
-  newOrder(@Param('orderNum', ParseIntPipe) orderNum: number) {
+  newOrder(@Param('orderNum', ParseIntPipe) orderNum: number): OrderCreateDto {
     return this.kitchenService.newOrder(orderNum);
   }
 
