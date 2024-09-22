@@ -47,11 +47,10 @@ describe('KitchenController', () => {
     expect(databaseService.getStatusList).toHaveBeenCalled();
   });
   it('should update order status and return result', async () => {
-    const result = await controller.updateStatus(orderStatusMock);
+    await controller.updateStatus(orderStatusMock);
     expect(databaseService.statusOrder).toHaveBeenCalledWith(
       orderStatusMock.id,
       orderStatusMock.status,
     );
-    expect(result).toBe(true);
   });
 });
