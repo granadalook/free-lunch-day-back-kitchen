@@ -4,7 +4,9 @@ import { DatabaseService } from '../../database/service/database.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { OrderStatusDto, OrderCreateDto } from '../dto/response.dto';
 import { KafkaTopicsConstants } from '../../constants/kafka.topics';
+import { ApiTags, ApiParam, ApiResponse } from '@nestjs/swagger';
 
+@ApiTags('kitchen')
 @Controller('kitchen')
 export class KitchenController {
   constructor(
@@ -13,6 +15,17 @@ export class KitchenController {
   ) {}
 
   @Get('newOrder/:orderNum')
+  @ApiParam({
+    name: 'orderNum',
+    required: true,
+    description: 'Número del pedido',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Pedido creado',
+    type: OrderCreateDto,
+  })
   newOrder(
     @Param('orderNum', ParseIntPipe) orderNum: number,
   ): Promise<OrderCreateDto> {
@@ -20,6 +33,11 @@ export class KitchenController {
   }
 
   @Get('orders')
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de órdenes',
+    type: [OrderStatusDto],
+  })
   getOrders(): Array<OrderStatusDto> {
     return this.databaseService.getStatusList();
   }
