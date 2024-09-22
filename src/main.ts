@@ -41,7 +41,7 @@ async function bootstrap() {
     },
   } as MicroserviceOptions);
   const config = new DocumentBuilder()
-    .setTitle('API Kitchen')
+    .setTitle('API KITCHEN')
     .setDescription('The kitchen API description')
     .setVersion('1.0')
     .build();
