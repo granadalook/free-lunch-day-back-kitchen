@@ -13,7 +13,9 @@ export class KitchenController {
   ) {}
 
   @Get('newOrder/:orderNum')
-  newOrder(@Param('orderNum', ParseIntPipe) orderNum: number): OrderCreateDto {
+  newOrder(
+    @Param('orderNum', ParseIntPipe) orderNum: number,
+  ): Promise<OrderCreateDto> {
     return this.kitchenService.newOrder(orderNum);
   }
 
@@ -23,7 +25,7 @@ export class KitchenController {
   }
 
   @MessagePattern(KafkaTopicsConstants.UPDATE_STATUS_TOPIC)
-  updateStatus(@Payload() payload: OrderStatusDto) {
-    return this.databaseService.statusOrder(payload.id, payload.status);
+  async updateStatus(@Payload() payload: OrderStatusDto) {
+    await this.databaseService.statusOrder(payload.id, payload.status);
   }
 }

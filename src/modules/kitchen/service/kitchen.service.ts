@@ -11,14 +11,17 @@ export class KitchenService {
     private databaseService: DatabaseService,
     @Inject('KAFKA_CLIENT') private kafkaService: ClientProxy,
   ) {}
-  newOrder(order: number): OrderCreateDto {
-    const foodRecipe = this.databaseService.getRecipeByCode(order);
-    this.databaseService.statusOrder(
+  async newOrder(order: number): Promise<OrderCreateDto> {
+    const foodRecipe = await this.databaseService.getRecipeByCode(order);
+    await this.databaseService.statusOrder(
       foodRecipe.id,
       StatusOrderEnum.CREATE_ORDER,
       order,
     );
-    this.kafkaService.emit(KafkaTopicsConstants.CREATE_ORDER_TOPIC, foodRecipe);
+    await this.kafkaService.emit(
+      KafkaTopicsConstants.CREATE_ORDER_TOPIC,
+      foodRecipe,
+    );
     return { message: StatusOrderEnum.CREATE_ORDER };
   }
 }

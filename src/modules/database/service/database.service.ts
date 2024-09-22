@@ -115,12 +115,12 @@ export class DatabaseService {
     }
     return null;
   }
-  statusOrder(id: string, status: string, order?: number): void {
+  async statusOrder(id: string, status: string, order?: number): Promise<void> {
     const existingOrder = this.statusList.find((order) => order.id === id);
     if (existingOrder) {
       existingOrder.status = status;
     } else {
-      this.statusList.push({ id, status, order });
+      await this.statusList.push({ id, status, order });
     }
   }
   getStatusList(): Array<OrderStatusDto> {
