@@ -118,7 +118,9 @@ export class DatabaseService {
   async statusOrder(id: string, status: string, order?: number): Promise<void> {
     const existingOrder = this.statusList.find((order) => order.id === id);
     if (existingOrder) {
-      existingOrder.status = status;
+      if (existingOrder.status !== 'DELIVERED') {
+        existingOrder.status = status;
+      }
     } else {
       await this.statusList.push({ id, status, order });
     }
