@@ -1,14 +1,14 @@
-# Usa la imagen oficial de Node.js como base
-FROM node:18
+# Etapa 1: Construcción
+FROM node:18 AS builder
 
 # Establece el directorio de trabajo
 WORKDIR /usr/src/app
 
-# Copia el package.json y package-lock.json
+# Copia los archivos de dependencias
 COPY package*.json ./
 
-# Instala las dependencias de producción
-RUN npm install --only=production
+# Instala todas las dependencias (producción y desarrollo)
+RUN npm install
 
 # Copia el resto del código fuente
 COPY . .
@@ -16,8 +16,21 @@ COPY . .
 # Compila el proyecto
 RUN npm run build
 
-# Expone el puerto en el que corre tu aplicación
+# Etapa 2: Producción
+FROM node:18-alpine
+
+# Establece el directorio de trabajo
+WORKDIR /usr/src/app
+
+# Copia solo los archivos necesarios desde la etapa de construcción
+COPY package*.json ./
+COPY --from=builder /usr/src/app/dist ./dist
+
+# Instala solo las dependencias de producción
+RUN npm install --only=production
+
+# Exponer el puerto en el que corre tu aplicación
 EXPOSE 3000
 
 # Comando para ejecutar tu aplicación
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main"]
